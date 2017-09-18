@@ -234,6 +234,12 @@ public class Driver implements java.sql.Driver {
       LOGGER.log(Level.SEVERE, "Error in url: {0}", url);
       return null;
     }
+    // Set user info if string is empty (will be used by SSPI authentication)
+    if (props.getProperty("user") != null) {
+      if (props.getProperty("user").isEmpty() || props.getProperty("user") == "") {
+          props.setProperty("user", System.getProperty("user.name"));
+      }
+    }
     try {
       // Setup java.util.logging.Logger using connection properties.
       setupLoggerFromProperties(props);
