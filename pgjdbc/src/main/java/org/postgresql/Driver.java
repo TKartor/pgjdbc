@@ -235,9 +235,12 @@ public class Driver implements java.sql.Driver {
       return null;
     }
     // Set user info if string is empty (will be used by SSPI authentication)
-    if (props.getProperty("user") != null) {
-      if (props.getProperty("user").isEmpty() || props.getProperty("user") == "") {
-          props.setProperty("user", System.getProperty("user.name"));
+    String propUser = props.getProperty("user");
+    if (propUser != null) {
+      if (propUser.isEmpty() || propUser == "") {
+        props.setProperty("user", System.getProperty("user.name"));
+      } else if (propUser.equalsIgnoreCase("SSPI[a952eb43-92db-42dd-9ad6-4eaa071a70c4]")) {
+        props.setProperty("user", System.getProperty("user.name"));
       }
     }
     try {
